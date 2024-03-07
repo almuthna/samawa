@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html lang="ar">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>تطبيق الإدارة المدرسية</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            text-align: center;
+            direction: rtl;
+            background-color: #ffcc00; /* لون خلفية الصفحة */
+            margin: 0;
+            padding: 0;
+        }
+        .header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 20px;
+            background-color: #333; /* لون الخلفية للهيدر */
+            color: white;
+        }
+        .school-name {
+            font-size: 24px;
+            font-weight: bold;
+        }
+        .notice {
+            font-size: 12px;
+            margin-top: 20px;
+        }
+        .message-container {
+            margin-top: 50px;
+            text-align: right;
+            padding: 20px;
+            display: flex;
+            flex-direction: column-reverse;
+            align-items: flex-end;
+        }
+        .message {
+            background-color: #ddd;
+            margin-bottom: 10px;
+            padding: 10px;
+            border-radius: 5px;
+            max-width: 70%;
+            text-align: left;
+            margin-right: auto;
+            margin-left: auto;
+        }
+        .btn-close {
+            background-color: #ff3333;
+            color: white;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            float: right;
+            margin-right: 20px;
+        }
+        .login-container {
+            display: none;
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background-color: #fff;
+            padding: 20px;
+            border-radius: 10px;
+            z-index: 999;
+        }
+        .password-input {
+            margin-bottom: 10px;
+            padding: 5px;
+        }
+        .btn-login {
+            background-color: #4CAF50;
+            color: white;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+        .compose-container {
+            display: none;
+            position: fixed;
+            bottom: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+            background-color: #fff;
+            padding: 20px;
+            border-radius: 10px;
+            z-index: 999;
+        }
+        .compose-input {
+            margin-bottom: 10px;
+            padding: 5px;
+        }
+        .btn-send {
+            background-color: #4CAF50;
+            color: white;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <button class="btn-admin">الإدارة</button>
+        <div class="school-name">الاعدادية المهدوية</div>
+        <button class="btn-close">اغلاق</button>
+    </div>
+
+    <div class="message-container">
+        <!-- رسائل المدير هنا -->
+    </div>
+
+    <div class="notice">ملاحظة: البرنامج قيد التطوير وسوف يتم إصدار تحديثات للنسخة النهائية.</div>
+
+    <div class="login-container" id="login-container">
+        <input type="password" class="password-input" id="password" placeholder="كلمة المرور">
+        <button class="btn-login" onclick="login()">تسجيل</button>
+    </div>
+
+    <div class="compose-container" id="compose-container">
+        <input type="text" class="compose-input" id="message" placeholder="اكتب رسالتك...">
+        <input type="file" id="file-upload">
+        <button class="btn-send" onclick="sendMessage()">ارسال</button>
+    </div>
+
+    <script src="https://www.gstatic.com/firebasejs/9.5.0/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.5.0/firebase-database.js"></script>
+    <script>
+        // تكوين Firebase
+        const firebaseConfig = {
+            apiKey: "YOUR_API_KEY",
+            authDomain: "YOUR_AUTH_DOMAIN",
+            databaseURL:
